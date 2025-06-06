@@ -2,9 +2,12 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 
 // Llamar los screen principales
@@ -29,6 +32,9 @@ function MyStackHome() {
          <Stack.Screen
             name="Home"
             component={ScreenHome}
+            options={{
+               headerShown: false,
+            }}
          />
          <Stack.Screen
             name="DetallesHome"
@@ -66,6 +72,57 @@ function MyStackLogin() {
    )
 }
 
+
+function MyDrawer() {
+   return (
+      <Drawer.Navigator>
+         <Drawer.Screen
+            name="Dash"
+            component={MyStackHome}
+            options={{
+               title: 'Dashboard',
+               drawerIcon: ({ color }) => <FontAwesome name="dashboard" size={24} color="color" />,
+               drawerActiveTintColor: 'blue',
+               drawerInactiveTintColor: 'gray',
+               drawerStyle: { backgroundColor: 'lightgray' }
+            }} />
+         <Drawer.Screen
+            name="notificaciones"
+            component={MyStackHome}
+            options={{
+               title: 'Notifications',
+               drawerIcon: ({ color }) => <FontAwesome name="bell" size={24} color="color" />,
+               drawerActiveTintColor: 'blue',
+               drawerInactiveTintColor: 'gray',
+               drawerStyle: { backgroundColor: 'lightgray' }
+            }}
+         />
+         <Drawer.Screen
+            name="perfin"
+            component={MyStackHome}
+            options={{
+               title: 'Perfil',
+               drawerIcon: ({ color }) => <FontAwesome name="user" size={24} color="color" />,
+               drawerActiveTintColor: 'blue',
+               drawerInactiveTintColor: 'gray',
+               drawerStyle: { backgroundColor: 'lightgray' }
+            }} />
+         <Drawer.Screen
+            name="settings"
+            component={MyStackHome}
+            options={{
+               title: 'Settings',
+               drawerIcon: ({ color }) => <FontAwesome name="cog" size={24} color="color" />,
+               drawerActiveTintColor: 'blue',
+               drawerInactiveTintColor: 'gray',
+               drawerStyle: { backgroundColor: 'lightgray' }
+            }} />
+      </Drawer.Navigator>
+   )
+
+}
+
+
 function MyTabs() {
    return (
       <Tab.Navigator>
@@ -98,7 +155,7 @@ function MyTabs() {
                tabBarInactiveTintColor: 'gray',
                tabBarStyle: { backgroundColor: 'lightgray' },
             }} />
-            <Tab.Screen
+         <Tab.Screen
             name="Notifications"
             component={ScreenNotifications} options={{
                title: 'Notifications',
@@ -113,9 +170,10 @@ function MyTabs() {
 }
 
 export default function navigation() {
+   const login = true;
    return (
-      //<MyTabs />
-      <MyStackLogin/>
-
+      <>
+         <MyDrawer />
+      </>
    )
 }
