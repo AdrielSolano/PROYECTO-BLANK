@@ -10,7 +10,7 @@ export default function ScreenHome() {
   return (
     <View style={{ padding: 10 }}>
       <Card style={{ padding: 5, marginTop: 10 }}>
-        <Icon source="a" color="blue" size={70} />
+        <Icon source="door" color="blue" size={70} />
         <Button icon="arrow-right-thin" mode="contained" onPress={()=>rutas.push("LucesCasa")}
           style={{
             marginBottom:10, backgroundColor: 'blue', color: 'white', fontSize: 20, padding: 10,

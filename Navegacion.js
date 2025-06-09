@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -172,8 +173,10 @@ function MyTabs() {
 export default function navigation() {
    const login = true;
    return (
-      <>
-         <MyDrawer/>
-      </>
+    <>
+      
+          <MyDrawer />
+      
+    </>
    )
 }
