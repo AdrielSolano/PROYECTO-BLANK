@@ -173,7 +173,7 @@ export default function navigation() {
    const login = true;
    return (
       <>
-         <MyDrawer />
+         <MyDrawer/>
       </>
    )
 }
