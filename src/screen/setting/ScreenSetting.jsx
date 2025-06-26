@@ -4,11 +4,9 @@ import ButtonLogout from '../../components/ButtonLogout';
 
 export default function ScreenSetting() {
   return (
-    <><View>
-      <Text>ScreenSetting</Text>
+    <View style={{ flex: 1, backgroundColor: '#dfe6e9' }}>
+      <ButtonLogout />
     </View>
-    <ButtonLogout/>
-    </>
   )
 }
 

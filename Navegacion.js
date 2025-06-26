@@ -32,11 +32,23 @@ function MyStackHome() {
       <Stack.Screen
         name="Inicio"
         component={ScreenHome}
-        options={{ headerShown: false }}
+        options={{ headerBackTitleVisible: false, title: '', headerShown: true }}
       />
-      <Stack.Screen name="DetallesHome" component={DetallesHome} />
-      <Stack.Screen name="LucesCasa" component={LucesCasa} />
-      <Stack.Screen name="PuertasCasa" component={PuertasCasa} />
+      <Stack.Screen
+        name="DetallesHome"
+        component={DetallesHome}
+        options={{ headerBackTitleVisible: false, title: '', headerShown: true }}
+      />
+      <Stack.Screen
+        name="LucesCasa"
+        component={LucesCasa}
+        options={{ headerBackTitleVisible: false, title: '', headerShown: true }}
+      />
+      <Stack.Screen
+        name="PuertasCasa"
+        component={PuertasCasa}
+        options={{ headerBackTitleVisible: false, title: '', headerShown: true }}
+      />
     </Stack.Navigator>
   );
 }
@@ -61,7 +73,7 @@ function MyTabs() {
           headerShown: false,
           title: 'Inicio',
           tabBarIcon: ({ color }) => <FontAwesome name="home" size={24} color={color} />,
-          tabBarActiveTintColor: 'blue',
+          tabBarActiveTintColor: '#0984e3',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: 'lightgray' },
         }}
@@ -72,7 +84,7 @@ function MyTabs() {
         options={{
           title: 'Acerca de',
           tabBarIcon: ({ color }) => <FontAwesome name="user-circle-o" size={24} color={color} />,
-          tabBarActiveTintColor: 'blue',
+          tabBarActiveTintColor: '#0984e3',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: 'lightgray' },
         }}
@@ -83,7 +95,7 @@ function MyTabs() {
         options={{
           title: 'Configuración',
           tabBarIcon: ({ color }) => <FontAwesome name="gear" size={24} color={color} />,
-          tabBarActiveTintColor: 'blue',
+          tabBarActiveTintColor: '#0984e3',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: 'lightgray' },
         }}
@@ -94,7 +106,7 @@ function MyTabs() {
         options={{
           title: 'Notificaciones',
           tabBarIcon: ({ color }) => <FontAwesome name="bell" size={24} color={color} />,
-          tabBarActiveTintColor: 'blue',
+          tabBarActiveTintColor: '#0984e3',
           tabBarInactiveTintColor: 'gray',
           tabBarStyle: { backgroundColor: 'lightgray' },
           tabBarBadge: '3',
@@ -113,7 +125,7 @@ function MyDrawer() {
         options={{
           title: 'Dashboard',
           drawerIcon: ({ color }) => <FontAwesome name="dashboard" size={24} color={color} />,
-          drawerActiveTintColor: 'blue',
+          drawerActiveTintColor: '#0984e3',
           drawerInactiveTintColor: 'gray',
           drawerStyle: { backgroundColor: 'lightgray' },
         }}
@@ -124,7 +136,7 @@ function MyDrawer() {
         options={{
           title: 'Perfil',
           drawerIcon: ({ color }) => <FontAwesome name="user" size={24} color={color} />,
-          drawerActiveTintColor: 'blue',
+          drawerActiveTintColor: '#0984e3',
           drawerInactiveTintColor: 'gray',
           drawerStyle: { backgroundColor: 'lightgray' },
         }}
@@ -135,7 +147,7 @@ function MyDrawer() {
         options={{
           title: 'Notificaciones',
           drawerIcon: ({ color }) => <FontAwesome name="bell" size={24} color={color} />,
-          drawerActiveTintColor: 'blue',
+          drawerActiveTintColor: '#0984e3',
           drawerInactiveTintColor: 'gray',
           drawerStyle: { backgroundColor: 'lightgray' },
         }}
@@ -146,7 +158,7 @@ function MyDrawer() {
         options={{
           title: 'Ajustes',
           drawerIcon: ({ color }) => <FontAwesome name="cog" size={24} color={color} />,
-          drawerActiveTintColor: 'blue',
+          drawerActiveTintColor: '#0984e3',
           drawerInactiveTintColor: 'gray',
           drawerStyle: { backgroundColor: 'lightgray' },
         }}

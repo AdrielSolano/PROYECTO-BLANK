@@ -1,11 +1,10 @@
-// BotonAddPuerta.jsx
 import React from "react";
 import { StyleSheet } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, useTheme } from "react-native-paper";
 
 export default function BotonAddPuerta({ recargarPuertas }) {
-  const api = process.env.EXPO_PUBLIC_API_URL;
-
+  const theme = useTheme();
+  
   const agregarPuerta = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -23,12 +22,11 @@ export default function BotonAddPuerta({ recargarPuertas }) {
       body: raw,
       redirect: "follow",
     };
-    try {
-      const response = await fetch(`${api}/api/puertas/agregar`, requestOptions);
 
+    try {
+      const response = await fetch("http://192.168.137.1:5000/api/puertas/agregar", requestOptions);
       const resultado = await response.json();
       console.log("Nueva puerta agregada:", resultado);
-
       if (recargarPuertas) recargarPuertas();
     } catch (error) {
       console.error("Error al agregar nueva puerta:", error);
@@ -37,24 +35,30 @@ export default function BotonAddPuerta({ recargarPuertas }) {
 
   return (
     <Button
-      icon="plus"
-      mode="contained"
+      icon="door"
+      mode="contained-tonal"
       onPress={agregarPuerta}
-      style={styles.boton}
+      style={[styles.boton, { backgroundColor: "#0984e3" }]}
+      labelStyle={[styles.label, { color: "#fff" }]}
       contentStyle={styles.content}
+      textColor="#fff"
+      iconColor="#fff"
     >
-      Agregar nueva puerta
+      Añadir puerta
     </Button>
   );
 }
 
 const styles = StyleSheet.create({
   boton: {
-    marginBottom: 20,
-    borderRadius: 8,
-    backgroundColor: "purple",
+    borderRadius: 12,
+    elevation: 2,
   },
   content: {
-    paddingVertical: 8,
+    height: 48,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

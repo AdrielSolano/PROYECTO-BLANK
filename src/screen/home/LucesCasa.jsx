@@ -1,19 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text, ActivityIndicator, useTheme, IconButton } from "react-native-paper";
+import { Text, ActivityIndicator, useTheme, Button } from "react-native-paper";
 import { estadoDevicesGlobal } from "../../context/contextdata";
+import LuzCard from "../../components/LuzCard"; // ✅
 import BotonAddLight from "../../components/BotonAddLight";
-import LuzCard from "../../components/LuzCard";
 
 export default function LucesCasas() {
   const theme = useTheme();
   const [luces, setLuces] = useState([]);
   const [cargando, setCargando] = useState(true);
-// En LucesCasa.jsx
-const { 
-  ObtenerTodasLuces = () => console.warn("Función ObtenerTodasLuces no disponible en contexto"),
-  obtenerEstadoLuz = () => false 
-} = useContext(estadoDevicesGlobal) || {};
+  const { ObtenerTodasLuces } = useContext(estadoDevicesGlobal);
+
 
   const obtenerLuces = async () => {
     const requestOptions = {
@@ -44,11 +41,11 @@ const {
 
   return (
     <ScrollView 
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
+      style={[styles.container, { backgroundColor: "#dfe6e9" }]}
       contentContainerStyle={styles.contentContainer}
     >
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: theme.colors.primary }]}>
+      <View style={[styles.header, { backgroundColor: "#0984e3" }]}>
         <Text variant="headlineMedium" style={styles.headerTitle}>
           Control de Iluminación
         </Text>
@@ -60,22 +57,22 @@ const {
       {/* Contenido principal */}
       <View style={styles.mainContent}>
         {/* Estadísticas */}
-        <View style={[styles.statsContainer, { backgroundColor: theme.colors.surface }]}>
-          <View style={styles.statItem}>
-            <Text variant="displaySmall" style={[styles.statValue, { color: theme.colors.primary }]}>
-              {luces.length}
-            </Text>
-            <Text variant="labelLarge">Dispositivos</Text>
+          <View style={[styles.statsContainer, { backgroundColor: theme.colors.surface }]}>
+            <View style={styles.statItem}>
+              <Text variant="displaySmall" style={[styles.statValue, { color: "#0984e3" }]}>
+                {luces.length}
+              </Text>
+              <Text variant="labelLarge">Dispositivos</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text variant="displaySmall" style={[styles.statValue, { color: "#0984e3" }]}>
+                {luces.filter(l => l.estado === true).length}
+              </Text>
+              <Text variant="labelLarge">Encendidos</Text>
+            </View>
           </View>
-          <View style={styles.statItem}>
-            <Text variant="displaySmall" style={[styles.statValue, { color: theme.colors.primary }]}>
-              {luces.filter(l => obtenerEstadoLuz(l.id)).length}
-            </Text>
-            <Text variant="labelLarge">Encendidos</Text>
-          </View>
-        </View>
 
-        {/* Acciones */}
+          {/* Acciones */}
         <View style={styles.actionsContainer}>
           <BotonAddLight recargarLuces={obtenerLuces} />
         </View>
@@ -91,7 +88,7 @@ const {
               <ActivityIndicator 
                 animating={true} 
                 size="large" 
-                color={theme.colors.primary}
+                color="#0984e3"
               />
               <Text variant="bodyMedium" style={styles.loadingText}>
                 Cargando dispositivos...
@@ -99,17 +96,21 @@ const {
             </View>
           ) : luces.length === 0 ? (
             <View style={styles.emptyContainer}>
-              <IconButton 
-                icon="lightbulb-off" 
-                size={48}
-                iconColor={theme.colors.outline}
-              />
-              <Text variant="titleMedium" style={styles.emptyTitle}>
-                No hay dispositivos
-              </Text>
-              <Text variant="bodyMedium" style={styles.emptyText}>
-                Presiona el botón para añadir tu primer dispositivo
-              </Text>
+              <Button 
+                mode="text"
+                icon="lightbulb-off"
+                textColor={theme.colors.outline}
+                onPress={() => {}}
+                contentStyle={{ flexDirection: 'column' }}
+                labelStyle={{ fontSize: 48 }}
+              >
+                <Text variant="titleMedium" style={styles.emptyTitle}>
+                  No hay dispositivos
+                </Text>
+                <Text variant="bodyMedium" style={styles.emptyText}>
+                  Presiona el botón para añadir tu primer dispositivo
+                </Text>
+              </Button>
             </View>
           ) : (
             luces.map((luz) => (

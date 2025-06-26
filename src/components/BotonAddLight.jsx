@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
-
 export default function BotonAddLight({ recargarLuces }) {
   const theme = useTheme();
   
@@ -39,9 +38,11 @@ export default function BotonAddLight({ recargarLuces }) {
       icon="lightbulb-on-outline"
       mode="contained-tonal"
       onPress={agregarLuz}
-      style={[styles.boton, { backgroundColor: theme.colors.primaryContainer }]}
-      labelStyle={styles.label}
+      style={[styles.boton, { backgroundColor: "#0984e3" }]}
+      labelStyle={[styles.label, { color: "#fff" }]}
       contentStyle={styles.content}
+      textColor="#fff"
+      iconColor="#fff"
     >
       Añadir dispositivo
     </Button>

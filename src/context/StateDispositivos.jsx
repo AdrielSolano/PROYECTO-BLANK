@@ -1,7 +1,6 @@
 import React, { createContext, useState } from "react";
+import { estadoDevicesGlobal } from "./contextdata";
 
-// Crea el contexto
-export const estadoDevicesGlobal = createContext();
 
 export default function StateDispositivos({ children }) {
   // ----------------------------- Estados Globales -----------------------------

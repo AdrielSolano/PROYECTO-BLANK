@@ -1,13 +1,12 @@
-// PuertasCasas.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text, ActivityIndicator } from "react-native-paper";
+import { Text, ActivityIndicator, useTheme, Button } from "react-native-paper";
 import { estadoDevicesGlobal } from "../../context/contextdata";
 import PuertaCard from "../../components/PuertaCard";
 import BotonAddPuerta from "../../components/BotonAddPuerta";
 
 export default function PuertasCasas() {
-  const api = process.env.EXPO_PUBLIC_API_URL;
+  const theme = useTheme();
   const [puertas, setPuertas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const { ObtenerTodasPuertas, establecerEstadoPuertasDesdeLista } = useContext(estadoDevicesGlobal);
@@ -17,14 +16,15 @@ export default function PuertasCasas() {
       method: "GET",
       redirect: "follow",
     };
+
     try {
-      const response = await fetch(`${api}/api/puertas`, requestOptions);
+      const response = await fetch("http://192.168.137.1:5000/api/puertas", requestOptions);
       const data = await response.json();
+
       if (Array.isArray(data.body)) {
         setPuertas(data.body);
         establecerEstadoPuertasDesdeLista(data.body);
         ObtenerTodasPuertas(true);
-        
       } else {
         console.error("La propiedad 'body' no es un arreglo:", data.body);
       }
@@ -40,85 +40,84 @@ export default function PuertasCasas() {
   }, []);
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
-        <View style={styles.headerGradient}>
-          <Text style={styles.title}>🏠 Puertas inteligentes</Text>
-          <Text style={styles.subtitle}>Control de accesos inteligente desde tu celular</Text>
-          <View style={styles.statsContainer}>
-            <View style={styles.statItem}>
-              <Text style={styles.statNumber}>{puertas.length}</Text>
-              <Text style={styles.statLabel}>Puertas</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statNumber}>Activo</Text>
-              <Text style={styles.statLabel}>Sistema</Text>
-            </View>
-          </View>
-        </View>
+    <ScrollView 
+      style={[styles.container, { backgroundColor: "#dfe6e9" }]}
+      contentContainerStyle={styles.contentContainer}
+    >
+      {/* Header */}
+      <View style={[styles.header, { backgroundColor: "#0984e3" }]}>
+        <Text variant="headlineMedium" style={styles.headerTitle}>
+          Control de Accesos
+        </Text>
+        <Text variant="bodyMedium" style={styles.headerSubtitle}>
+          Administra tus puertas inteligentes
+        </Text>
       </View>
 
-      <View style={styles.actionSection}>
-        <View style={styles.actionHeader}>
-          <Text style={styles.sectionTitle}>✨ Acciones rápidas</Text>
+      {/* Contenido principal */}
+      <View style={styles.mainContent}>
+        {/* Estadísticas */}
+        <View style={[styles.statsContainer, { backgroundColor: theme.colors.surface }]}>
+          <View style={styles.statItem}>
+            <Text variant="displaySmall" style={[styles.statValue, { color: "#0984e3" }]}>
+              {puertas.length}
+            </Text>
+            <Text variant="labelLarge">Puertas</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text variant="displaySmall" style={[styles.statValue, { color: "#0984e3" }]}>
+              {puertas.filter(p => p.estado === "abierta").length}
+            </Text>
+            <Text variant="labelLarge">Abiertas</Text>
+          </View>
         </View>
-        <BotonAddPuerta recargarPuertas={obtenerPuertas} />
-      </View>
 
-      <View style={styles.contentSection}>
-        <Text style={styles.sectionTitle}>🚪 Mis Puertas</Text>
-        
-        {cargando ? (
-          <View style={styles.loadingContainer}>
-            <View style={styles.loadingContent}>
-              <ActivityIndicator animating={true} color="#8B5CF6" size="large" />
-              <Text style={styles.loadingText}>Sincronizando dispositivos...</Text>
-              <View style={styles.loadingDots}>
-                <View style={[styles.dot, styles.dot1]} />
-                <View style={[styles.dot, styles.dot2]} />
-                <View style={[styles.dot, styles.dot3]} />
-              </View>
-            </View>
-          </View>
-        ) : puertas.length === 0 ? (
-          <View style={styles.emptyStateContainer}>
-            <View style={styles.emptyStateContent}>
-              <View style={styles.emptyIconContainer}>
-                <Text style={styles.emptyStateIcon}>🏡</Text>
-              </View>
-              <Text style={styles.emptyStateTitle}>¡Conecta tu primera puerta!</Text>
-              <Text style={styles.emptyStateSubtitle}>
-                Transforma tu hogar en un espacio inteligente.{'\n'}
-                Agrega puertas y controla el acceso desde cualquier lugar.
-              </Text>
-              <View style={styles.emptyFeatures}>
-                <View style={styles.featureItem}>
-                  <Text style={styles.featureIcon}>🔒</Text>
-                  <Text style={styles.featureText}>Control remoto</Text>
-                </View>
-                <View style={styles.featureItem}>
-                  <Text style={styles.featureIcon}>📱</Text>
-                  <Text style={styles.featureText}>Desde tu móvil</Text>
-                </View>
-                <View style={styles.featureItem}>
-                  <Text style={styles.featureIcon}>🔔</Text>
-                  <Text style={styles.featureText}>Notificaciones</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.puertasGrid}>
-            {puertas.map((puerta) => (
-              <PuertaCard 
-                key={puerta.id} 
-                puerta={puerta} 
-                recargarPuertas={obtenerPuertas} 
+        {/* Acciones */}
+        <View style={styles.actionsContainer}>
+          <BotonAddPuerta recargarPuertas={obtenerPuertas} />
+        </View>
+
+        {/* Lista de puertas */}
+        <View style={styles.puertasContainer}>
+          <Text variant="titleLarge" style={styles.sectionTitle}>
+            Mis Puertas
+          </Text>
+
+          {cargando ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator 
+                animating={true} 
+                size="large" 
+                color="#0984e3"
               />
-            ))}
-          </View>
-        )}
+              <Text variant="bodyMedium" style={styles.loadingText}>
+                Cargando puertas...
+              </Text>
+            </View>
+          ) : puertas.length === 0 ? (
+            <View style={styles.emptyContainer}>
+              <Button 
+                mode="text"
+                icon="door"
+                textColor={theme.colors.outline}
+                onPress={() => {}}
+                contentStyle={{ flexDirection: 'column' }}
+                labelStyle={{ fontSize: 48 }}
+              >
+                <Text variant="titleMedium" style={styles.emptyTitle}>
+                  No hay puertas registradas
+                </Text>
+                <Text variant="bodyMedium" style={styles.emptyText}>
+                  Presiona el botón para añadir tu primera puerta
+                </Text>
+              </Button>
+            </View>
+          ) : (
+            puertas.map((puerta) => (
+              <PuertaCard key={puerta.id} puerta={puerta} recargarPuertas={obtenerPuertas} />
+            ))
+          )}
+        </View>
       </View>
     </ScrollView>
   );
@@ -127,230 +126,73 @@ export default function PuertasCasas() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F3F2FF",
+  },
+  contentContainer: {
+    paddingBottom: 20,
   },
   header: {
-    marginBottom: 24,
+    padding: 24,
+    paddingBottom: 32,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    elevation: 4,
   },
-  headerGradient: {
-    backgroundColor: "#8B5CF6",
-    paddingHorizontal: 24,
-    paddingTop: 32,
-    paddingBottom: 28,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-    shadowColor: "#8B5CF6",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 12,
+  headerTitle: {
+    color: 'white',
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
-  title: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: "#FFFFFF",
-    marginBottom: 6,
-    letterSpacing: -0.8,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#E5E7EB",
-    fontWeight: "500",
-    textAlign: "center",
-    marginBottom: 20,
+  headerSubtitle: {
+    color: 'white',
     opacity: 0.9,
   },
+  mainContent: {
+    padding: 16,
+    marginTop: -16,
+  },
   statsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     borderRadius: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    backdropFilter: "blur(10px)",
+    padding: 16,
+    marginBottom: 16,
+    elevation: 2,
   },
   statItem: {
-    alignItems: "center",
-    flex: 1,
+    alignItems: 'center',
+    padding: 8,
   },
-  statNumber: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    marginBottom: 2,
+  statValue: {
+    fontWeight: 'bold',
+    marginBottom: 4,
   },
-  statLabel: {
-    fontSize: 12,
-    color: "#E5E7EB",
-    fontWeight: "500",
-    opacity: 0.8,
-  },
-  statDivider: {
-    width: 1,
-    height: 30,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
-    marginHorizontal: 20,
-  },
-  actionSection: {
-    marginHorizontal: 20,
+  actionsContainer: {
     marginBottom: 24,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    padding: 20,
-    shadowColor: "#8B5CF6",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 6,
-    borderWidth: 1,
-    borderColor: "#EDE9FE",
   },
-  actionHeader: {
+  puertasContainer: {
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#374151",
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  contentSection: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingBottom: 24,
+    marginBottom: 16,
+    fontWeight: '600',
   },
   loadingContainer: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    marginTop: 12,
-    shadowColor: "#8B5CF6",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-    borderWidth: 1,
-    borderColor: "#EDE9FE",
-  },
-  loadingContent: {
-    paddingVertical: 60,
-    paddingHorizontal: 32,
-    alignItems: "center",
+    alignItems: 'center',
+    padding: 40,
   },
   loadingText: {
-    fontSize: 18,
-    color: "#7C3AED",
-    marginTop: 20,
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  loadingDots: {
-    flexDirection: "row",
     marginTop: 16,
   },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#C4B5FD",
-    marginHorizontal: 4,
+  emptyContainer: {
+    alignItems: 'center',
+    padding: 40,
   },
-  dot1: {
-    opacity: 1,
-  },
-  dot2: {
-    opacity: 0.7,
-  },
-  dot3: {
-    opacity: 0.4,
-  },
-  emptyStateContainer: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    marginTop: 12,
-    shadowColor: "#8B5CF6",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-    borderWidth: 1,
-    borderColor: "#EDE9FE",
-  },
-  emptyStateContent: {
-    paddingVertical: 48,
-    paddingHorizontal: 28,
-    alignItems: "center",
-  },
-  emptyIconContainer: {
-    backgroundColor: "#FAF5FF",
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 24,
-    shadowColor: "#8B5CF6",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  emptyStateIcon: {
-    fontSize: 40,
-  },
-  emptyStateTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#374151",
-    textAlign: "center",
-    marginBottom: 12,
-    letterSpacing: -0.3,
-  },
-  emptyStateSubtitle: {
-    fontSize: 16,
-    color: "#6B7280",
-    textAlign: "center",
-    lineHeight: 24,
-    marginBottom: 32,
-    opacity: 0.8,
-  },
-  emptyFeatures: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-  },
-  featureItem: {
-    alignItems: "center",
-    flex: 1,
-  },
-  featureIcon: {
-    fontSize: 24,
+  emptyTitle: {
+    marginTop: 16,
     marginBottom: 8,
   },
-  featureText: {
-    fontSize: 12,
-    color: "#8B5CF6",
-    fontWeight: "600",
-    textAlign: "center",
-  },
-  puertasGrid: {
-    marginTop: 12,
+  emptyText: {
+    textAlign: 'center',
+    opacity: 0.8,
   },
 });
